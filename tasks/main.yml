@@ -1,9 +1,11 @@
 ---
 # tasks file for ansible-role-sensu_agent
 
-- include_vars: "{{ ansible_os_family }}.yml"
+- name: Include var/ansible_os_family.yml
+  include_vars: "{{ ansible_os_family }}.yml"
 
-- include: "install-{{ ansible_os_family }}.yml"
+- name: Include install-ansible_os_family.yml
+  include: "install-{{ ansible_os_family }}.yml"
 
 - name: Create log directory
   file:
@@ -23,9 +25,9 @@
     state: directory
   notify: Restart sensu_agent
 
-- name: Create sensu_agent.conf
+- name: Create sensu_agent.yml
   template:
-    src: sensu_agent.conf.j2
+    src: sensu_agent.yml.j2
     dest: "{{ sensu_agent_conf_file }}"
     validate: echo %s
   notify: Restart sensu_agent

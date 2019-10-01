@@ -1,0 +1,19 @@
+---
+
+- name: Install sensu_agent
+  apt:
+    name: "{{ sensu_agent_package }}"
+    state: present
+
+- name: Create /etc/default/sensu-agent
+  template:
+    src: Debian.default.j2
+    dest: "/etc/default/{{ sensu_agent_service }}"
+    validate: sh -n %s
+  notify:
+    - Restart sensu_agent
+
+- name: Enable sensu_agent_service
+  service:
+    name: "{{ sensu_agent_service }}"
+    enabled: yes

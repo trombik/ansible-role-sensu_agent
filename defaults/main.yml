@@ -1,9 +1,10 @@
 ---
-sensu_agent_user: sensu_agent
-sensu_agent_group: sensu_agent
+sensu_agent_user: "{{ __sensu_agent_user }}"
+sensu_agent_group: "{{ __sensu_agent_group }}"
+sensu_agent_service: "{{ __sensu_agent_service }}"
+sensu_agent_package: "{{ __sensu_agent_package }}"
 sensu_agent_log_dir: /var/log/sensu_agent
 sensu_agent_db_dir: "{{ __sensu_agent_db_dir }}"
-sensu_agent_service: sensu_agent
 sensu_agent_conf_dir: "{{ __sensu_agent_conf_dir }}"
-sensu_agent_conf_file: "{{ __sensu_agent_conf_dir }}/sensu_agent.conf"
+sensu_agent_conf_file: "{{ __sensu_agent_conf_dir }}/agent.yml"
 sensu_agent_flags: ""

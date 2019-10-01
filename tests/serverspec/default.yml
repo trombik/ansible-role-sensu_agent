@@ -1,6 +1,28 @@
 ---
 - hosts: localhost
   roles:
+    - name: trombik.freebsd_pkg_repo
+      when: ansible_os_family == 'FreeBSD'
+    - name: trombik.apt_repo
+      when: ansible_os_family == 'Debian'
     - ansible-role-sensu_agent
   vars:
-    sensu_agent_config: ""
+    apt_repo_keys_to_add:
+      - https://packagecloud.io/sensu/stable/gpgkey
+    apt_repo_to_add:
+      - deb https://packagecloud.io/sensu/stable/ubuntu/ bionic main
+    apt_repo_enable_apt_transport_https: yes
+    freebsd_pkg_repo:
+      sensu:
+        enabled: "true"
+        url: pkg+http://pkg.freebsd.org/${ABI}/latest
+        signature_type: fingerprints
+        fingerprints: /usr/share/keys/pkg
+        mirror_type: srv
+        priority: 100
+        state: present
+    sensu_agent_flags: |
+      sensu_agent_config='{{ sensu_agent_conf_dir }}/sensu-agent.yml'
+    sensu_agent_config:
+      name: localhost
+      namespace: default
