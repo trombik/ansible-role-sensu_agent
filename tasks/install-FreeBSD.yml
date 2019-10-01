@@ -1,0 +1,6 @@
+---
+
+- name: Install sensu_agent
+  pkgng:
+    name: sensu_agent
+    state: present

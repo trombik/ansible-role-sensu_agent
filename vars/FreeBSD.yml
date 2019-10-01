@@ -1,0 +1,3 @@
+---
+__sensu_agent_db_dir: /var/db/sensu_agent
+__sensu_agent_conf_dir: /usr/local/etc/sensu_agent

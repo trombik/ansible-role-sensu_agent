@@ -1,0 +1,37 @@
+---
+# tasks file for ansible-role-sensu_agent
+
+- include_vars: "{{ ansible_os_family }}.yml"
+
+- include: "install-{{ ansible_os_family }}.yml"
+
+- name: Create log directory
+  file:
+    path: "{{ sensu_agent_log_dir }}"
+    mode: 0755
+    owner: "{{ sensu_agent_user }}"
+    group: "{{ sensu_agent_group }}"
+    state: directory
+  notify: Restart sensu_agent
+
+- name: Create db directory
+  file:
+    path: "{{ sensu_agent_db_dir }}"
+    mode: 0755
+    owner: "{{ sensu_agent_user }}"
+    group: "{{ sensu_agent_group }}"
+    state: directory
+  notify: Restart sensu_agent
+
+- name: Create sensu_agent.conf
+  template:
+    src: sensu_agent.conf.j2
+    dest: "{{ sensu_agent_conf_file }}"
+    validate: echo %s
+  notify: Restart sensu_agent
+
+- name: Start sensu_agent
+  service:
+    name: "{{ sensu_agent_service }}"
+    enabled: true
+    state: started
