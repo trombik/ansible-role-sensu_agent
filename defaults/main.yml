@@ -6,5 +6,5 @@ sensu_agent_package: "{{ __sensu_agent_package }}"
 sensu_agent_log_dir: /var/log/sensu_agent
 sensu_agent_db_dir: "{{ __sensu_agent_db_dir }}"
 sensu_agent_conf_dir: "{{ __sensu_agent_conf_dir }}"
-sensu_agent_conf_file: "{{ __sensu_agent_conf_dir }}/agent.yml"
+sensu_agent_conf_file: "{{ sensu_agent_conf_dir }}/agent.yml"
 sensu_agent_flags: ""

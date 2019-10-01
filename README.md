@@ -1,6 +1,6 @@
-# ansible-role-sensu_agent
+# `trombik.sensu_agent`
 
-A brief description of the role goes here.
+`ansible` role to install `sensu-agent`.
 
 # Requirements
 
@@ -8,9 +8,39 @@ None
 
 # Role Variables
 
-| variable | description | default |
+| Variable | Description | Default |
 |----------|-------------|---------|
+| `sensu_agent_user` | User name of `sensu-agent` | `{{ __sensu_agent_user }}` |
+| `sensu_agent_group` | Group name of `sensu-agent` | `{{ __sensu_agent_group }}` |
+| `sensu_agent_service` | Service name of `sensu-agent` | `{{ __sensu_agent_service }}` |
+| `sensu_agent_package` | Package name of `sensu-agent` | `{{ __sensu_agent_package }}` |
+| `sensu_agent_log_dir` | Path to log directory | `/var/log/sensu_agent` |
+| `sensu_agent_db_dir` | Path to database directory | `{{ __sensu_agent_db_dir }}` |
+| `sensu_agent_conf_dir` | Path to configuration directory | `{{ __sensu_agent_conf_dir }}` |
+| `sensu_agent_conf_file` | Path to `agent.yml` | `{{ sensu_agent_conf_dir }}/agent.yml` |
+| `sensu_agent_flags` | Optional arguments to pass service `sensu-agent` | `""` |
 
+## Debian
+
+| Variable | Default |
+|----------|---------|
+| `__sensu_agent_user` | `sensu` |
+| `__sensu_agent_group` | `sensu` |
+| `__sensu_agent_service` | `sensu-agent` |
+| `__sensu_agent_package` | `sensu-go-agent` |
+| `__sensu_agent_db_dir` | `/var/lib/sensu_agent` |
+| `__sensu_agent_conf_dir` | `/etc/sensu` |
+
+## FreeBSD
+
+| Variable | Default |
+|----------|---------|
+| `__sensu_agent_user` | `sensu` |
+| `__sensu_agent_group` | `sensu` |
+| `__sensu_agent_service` | `sensu-agent` |
+| `__sensu_agent_package` | `sysutils/sensu-go` |
+| `__sensu_agent_db_dir` | `/var/db/sensu_agent` |
+| `__sensu_agent_conf_dir` | `/usr/local/etc/sensu` |
 
 # Dependencies
 
@@ -19,6 +49,34 @@ None
 # Example Playbook
 
 ```yaml
+---
+- hosts: localhost
+  roles:
+    - name: trombik.freebsd_pkg_repo
+      when: ansible_os_family == 'FreeBSD'
+    - name: trombik.apt_repo
+      when: ansible_os_family == 'Debian'
+    - ansible-role-sensu_agent
+  vars:
+    apt_repo_keys_to_add:
+      - https://packagecloud.io/sensu/stable/gpgkey
+    apt_repo_to_add:
+      - deb https://packagecloud.io/sensu/stable/ubuntu/ bionic main
+    apt_repo_enable_apt_transport_https: yes
+    freebsd_pkg_repo:
+      sensu:
+        enabled: "true"
+        url: pkg+http://pkg.freebsd.org/${ABI}/latest
+        signature_type: fingerprints
+        fingerprints: /usr/share/keys/pkg
+        mirror_type: srv
+        priority: 100
+        state: present
+    sensu_agent_flags: |
+      sensu_agent_config='{{ sensu_agent_conf_dir }}/sensu-agent.yml'
+    sensu_agent_config:
+      name: localhost
+      namespace: default
 ```
 
 # License
