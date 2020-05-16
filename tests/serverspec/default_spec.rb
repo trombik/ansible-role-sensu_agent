@@ -9,6 +9,7 @@ group   = "sensu"
 ports   = []
 log_dir = "/var/log/sensu_agent"
 db_dir  = "/var/lib/sensu_agent"
+gems    = %w[sensu-plugin sensu-plugins-disk-checks]
 
 case os[:family]
 when "freebsd"
@@ -64,5 +65,12 @@ end
 ports.each do |p|
   describe port(p) do
     it { should be_listening }
+  end
+end
+
+gems.each do |g|
+  describe package g do
+    let(:sudo_options) { "-u #{user}" }
+    it { should be_installed.by('gem') }
   end
 end
