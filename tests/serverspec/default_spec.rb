@@ -42,9 +42,13 @@ end
 
 case os[:family]
 when "freebsd"
-  describe file("/etc/rc.conf.d/sensu-agent") do
+  describe file("/etc/rc.conf.d/sensu_agent") do
     it { should be_file }
     its(:content) { should match(/Managed by ansible/) }
+  end
+  describe command "ps -wp `pgrep sensu-agent`" do
+    its(:stderr) { should eq "" }
+    its(:stdout) { should match Regexp.escape("sensu-agent start -c /usr/local/etc/sensu/agent.yml") }
   end
 when "ubuntu"
   describe file("/etc/default/sensu-agent") do
