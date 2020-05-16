@@ -22,7 +22,7 @@
         priority: 100
         state: present
     sensu_agent_flags: |
-      sensu_agent_config='{{ sensu_agent_conf_dir }}/sensu-agent.yml'
+      sensu_agent_config='{{ sensu_agent_conf_dir }}/agent.yml'
     sensu_agent_config:
       name: localhost
       namespace: default
