@@ -13,14 +13,21 @@
       - deb https://packagecloud.io/sensu/stable/ubuntu/ bionic main
     apt_repo_enable_apt_transport_https: yes
     freebsd_pkg_repo:
-      sensu:
-        enabled: "true"
-        url: pkg+http://pkg.freebsd.org/${ABI}/latest
-        signature_type: fingerprints
-        fingerprints: /usr/share/keys/pkg
-        mirror_type: srv
-        priority: 100
+
+      # disable the default package repository
+      FreeBSD:
+        enabled: "false"
         state: present
+
+      # enable my own package repository, where the latest package is
+      # available
+      FreeBSD_devel:
+        enabled: "true"
+        state: present
+        url: "http://pkg.i.trombik.org/{{ ansible_distribution_version | regex_replace('\\.', '') }}{{ansible_architecture}}-default-default/"
+        mirror_type: http
+        signature_type: none
+        priority: 100
     sensu_agent_flags: |
       sensu_agent_config='{{ sensu_agent_conf_dir }}/agent.yml'
     sensu_agent_config:
