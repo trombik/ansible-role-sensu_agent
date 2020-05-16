@@ -5,6 +5,7 @@
       when: ansible_os_family == 'FreeBSD'
     - name: trombik.apt_repo
       when: ansible_os_family == 'Debian'
+    - name: trombik.language_ruby
     - ansible-role-sensu_agent
   vars:
     apt_repo_keys_to_add:
@@ -28,8 +29,12 @@
         mirror_type: http
         signature_type: none
         priority: 100
+
     sensu_agent_flags: |
       sensu_agent_config='{{ sensu_agent_conf_dir }}/agent.yml'
     sensu_agent_config:
       name: localhost
       namespace: default
+    sensu_agent_ruby_plugins:
+      - sensu-plugin
+      - sensu-plugins-disk-checks

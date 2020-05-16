@@ -16,6 +16,11 @@
     state: directory
   notify: Restart sensu_agent
 
+- name: Create sensu_agent_conf_dir
+  file:
+    path: "{{ sensu_agent_conf_dir }}"
+    state: directory
+
 - name: Create db directory
   file:
     path: "{{ sensu_agent_db_dir }}"
@@ -31,6 +36,14 @@
     dest: "{{ sensu_agent_conf_file }}"
     validate: echo %s
   notify: Restart sensu_agent
+
+- name: Install sensu ruby plugins
+  gem:
+    name: "{{ item }}"
+    user_install: yes
+  with_items: "{{ sensu_agent_ruby_plugins }}"
+  become: yes
+  become_user: "{{ sensu_agent_user }}"
 
 - name: Start sensu_agent
   service:

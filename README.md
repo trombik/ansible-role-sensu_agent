@@ -4,7 +4,7 @@
 
 # Requirements
 
-None
+Ruby must be installed.
 
 # Role Variables
 
@@ -18,6 +18,7 @@ None
 | `sensu_agent_db_dir` | Path to database directory | `{{ __sensu_agent_db_dir }}` |
 | `sensu_agent_conf_dir` | Path to configuration directory | `{{ __sensu_agent_conf_dir }}` |
 | `sensu_agent_conf_file` | Path to `agent.yml` | `{{ sensu_agent_conf_dir }}/agent.yml` |
+| `sensu_agent_ruby_plugins` | List of ruby `gem` to install | `[]` |
 | `sensu_agent_flags` | Optional arguments to pass service `sensu-agent` | `""` |
 
 ## Debian
@@ -56,6 +57,7 @@ None
       when: ansible_os_family == 'FreeBSD'
     - name: trombik.apt_repo
       when: ansible_os_family == 'Debian'
+    - name: trombik.language_ruby
     - ansible-role-sensu_agent
   vars:
     apt_repo_keys_to_add:
@@ -64,19 +66,30 @@ None
       - deb https://packagecloud.io/sensu/stable/ubuntu/ bionic main
     apt_repo_enable_apt_transport_https: yes
     freebsd_pkg_repo:
-      sensu:
-        enabled: "true"
-        url: pkg+http://pkg.freebsd.org/${ABI}/latest
-        signature_type: fingerprints
-        fingerprints: /usr/share/keys/pkg
-        mirror_type: srv
-        priority: 100
+
+      # disable the default package repository
+      FreeBSD:
+        enabled: "false"
         state: present
+
+      # enable my own package repository, where the latest package is
+      # available
+      FreeBSD_devel:
+        enabled: "true"
+        state: present
+        url: "http://pkg.i.trombik.org/{{ ansible_distribution_version | regex_replace('\\.', '') }}{{ansible_architecture}}-default-default/"
+        mirror_type: http
+        signature_type: none
+        priority: 100
+
     sensu_agent_flags: |
-      sensu_agent_config='{{ sensu_agent_conf_dir }}/sensu-agent.yml'
+      sensu_agent_config='{{ sensu_agent_conf_dir }}/agent.yml'
     sensu_agent_config:
       name: localhost
       namespace: default
+    sensu_agent_ruby_plugins:
+      - sensu-plugin
+      - sensu-plugins-disk-checks
 ```
 
 # License
