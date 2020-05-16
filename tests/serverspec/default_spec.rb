@@ -12,7 +12,6 @@ db_dir  = "/var/lib/sensu_agent"
 
 case os[:family]
 when "freebsd"
-  package = "sensu-go"
   config = "/usr/local/etc/sensu/agent.yml"
   db_dir = "/var/db/sensu_agent"
 end

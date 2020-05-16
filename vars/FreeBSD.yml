@@ -2,6 +2,6 @@
 __sensu_agent_user: sensu
 __sensu_agent_group: sensu
 __sensu_agent_service: sensu-agent
-__sensu_agent_package: sysutils/sensu-go
+__sensu_agent_package: sysutils/sensu-go-agent
 __sensu_agent_db_dir: /var/db/sensu_agent
 __sensu_agent_conf_dir: /usr/local/etc/sensu
