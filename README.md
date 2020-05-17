@@ -11,6 +11,7 @@ Ruby must be installed.
 | Variable | Description | Default |
 |----------|-------------|---------|
 | `sensu_agent_user` | User name of `sensu-agent` | `{{ __sensu_agent_user }}` |
+| `sensu_agent_home` | Home directory of `sensu-agent` | `/home/{{ sensu_agent_user }}` |
 | `sensu_agent_group` | Group name of `sensu-agent` | `{{ __sensu_agent_group }}` |
 | `sensu_agent_service` | Service name of `sensu-agent` | `{{ __sensu_agent_service }}` |
 | `sensu_agent_package` | Package name of `sensu-agent` | `{{ __sensu_agent_package }}` |
@@ -81,6 +82,12 @@ None
         mirror_type: http
         signature_type: none
         priority: 100
+
+    os_sensu_agent_extra_packages:
+      FreeBSD: []
+      Debian:
+        - ruby-dev
+    sensu_agent_extra_packages: "{{ os_sensu_agent_extra_packages[ansible_os_family] }}"
 
     sensu_agent_flags: |
       sensu_agent_config='{{ sensu_agent_conf_dir }}/agent.yml'
