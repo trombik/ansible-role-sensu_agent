@@ -21,6 +21,12 @@
     path: "{{ sensu_agent_conf_dir }}"
     state: directory
 
+- name: Create sensu user home directory
+  user:
+    name: "{{ sensu_agent_user }}"
+    home: "/home/{{ sensu_agent_user }}"
+    create_home: yes
+
 - name: Create db directory
   file:
     path: "{{ sensu_agent_db_dir }}"

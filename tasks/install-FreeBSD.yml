@@ -1,5 +1,10 @@
 ---
 
+- name: Install sensu_agent_extra_packages
+  pkgng:
+    name: "{{ sensu_agent_extra_packages }}"
+    state: present
+
 - name: Install sensu_agent
   pkgng:
     name: "{{ sensu_agent_package }}"

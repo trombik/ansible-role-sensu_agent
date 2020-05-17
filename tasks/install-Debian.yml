@@ -1,5 +1,10 @@
 ---
 
+- name: Install sensu_agent_extra_packages
+  apt:
+    name: "{{ sensu_agent_extra_packages }}"
+    state: present
+
 - name: Install sensu_agent
   apt:
     name: "{{ sensu_agent_package }}"
