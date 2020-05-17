@@ -1,5 +1,6 @@
 ---
 sensu_agent_user: "{{ __sensu_agent_user }}"
+sensu_agent_home: "/home/{{ sensu_agent_user }}"
 sensu_agent_group: "{{ __sensu_agent_group }}"
 sensu_agent_service: "{{ __sensu_agent_service }}"
 sensu_agent_package: "{{ __sensu_agent_package }}"

@@ -24,7 +24,7 @@
 - name: Create sensu user home directory
   user:
     name: "{{ sensu_agent_user }}"
-    home: "/home/{{ sensu_agent_user }}"
+    home: "{{ sensu_agent_home }}"
     create_home: yes
 
 - name: Create db directory
