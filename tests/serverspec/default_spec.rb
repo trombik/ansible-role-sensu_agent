@@ -70,7 +70,7 @@ end
 
 gems.each do |g|
   describe package g do
-    let(:sudo_options) { "-u #{user}" }
+    let(:sudo_options) { "-u #{user} --set-home" }
     it { should be_installed.by('gem') }
   end
 end

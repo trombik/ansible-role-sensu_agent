@@ -30,6 +30,12 @@
         signature_type: none
         priority: 100
 
+    os_sensu_agent_extra_packages:
+      FreeBSD: []
+      Debian:
+        - ruby-dev
+    sensu_agent_extra_packages: "{{ os_sensu_agent_extra_packages[ansible_os_family] }}"
+
     sensu_agent_flags: |
       sensu_agent_config='{{ sensu_agent_conf_dir }}/agent.yml'
     sensu_agent_config:
